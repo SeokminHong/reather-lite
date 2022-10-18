@@ -5,14 +5,16 @@ defmodule ReatherTest.DocTest do
     @doc """
     Test function
     """
-    reather foo() do
+    @reather true
+    def foo() do
       %{a: a} <- Reather.ask()
       %{b: b} <- Reather.ask()
       1 + a + b
     end
 
     @doc false
-    reather bar() do
+    @reather true
+    def bar() do
       x <- foo()
 
       x + 1

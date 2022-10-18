@@ -5,7 +5,8 @@ defmodule ReatherTest.ErrorTest do
   defmodule Target do
     use Reather
 
-    reather foo() do
+    @reather true
+    def foo() do
       x <- {:ok, 1}
       y <- {:error, "asdf", 1}
 

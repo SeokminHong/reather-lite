@@ -6,7 +6,8 @@ defmodule ReatherTest.LazyTest do
   defmodule Target do
     use Reather
 
-    reather single() do
+    @reather true
+    def single() do
       (1 + 1) |> IO.inspect()
     end
   end

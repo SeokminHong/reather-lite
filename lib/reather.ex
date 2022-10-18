@@ -4,7 +4,6 @@ defmodule Reather do
   @type reather :: %Reather{reather: fun()}
 
   require Reather.Macros
-  import Reather.Macros
   alias Reather.Either
 
   @moduledoc """
@@ -18,7 +17,8 @@ defmodule Reather do
 
   defmacro __using__([]) do
     quote do
-      import Reather.Macros, only: [reather: 1, reather: 2, reatherp: 2]
+      import Kernel, except: [def: 2, defp: 2]
+      import Reather.Macros, only: [reather: 1, def: 2, defp: 2]
       require Reather.Macros
       alias Reather.Either
     end
@@ -56,7 +56,7 @@ defmodule Reather do
   """
   @spec map(reather, (any -> any)) :: reather
   def map(r, fun) do
-    reather do
+    Reather.Macros.reather do
       x <- r
 
       fun.(x)

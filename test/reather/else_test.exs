@@ -5,7 +5,8 @@ defmodule ReatherTest.ElseTest do
   defmodule Target do
     use Reather
 
-    reather foo1(a, b) do
+    @reather true
+    def foo1(a, b) do
       x <- bar(a, b)
       y <- baz(a)
 
@@ -15,13 +16,15 @@ defmodule ReatherTest.ElseTest do
       other -> other
     end
 
-    reather foo2(a, b) do
+    @reather true
+    def foo2(a, b) do
       x <- foo1(a, b)
 
       x + 1
     end
 
-    reather foo3(a, b) do
+    @reather true
+    def foo3(a, b) do
       x <- foo1(a, b)
       y <- baz(a)
 

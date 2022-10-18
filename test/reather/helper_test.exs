@@ -6,18 +6,21 @@ defmodule ReatherTest.HelperTest do
   defmodule Target do
     use Reather
 
-    reather foo(a, b) do
+    @reather true
+    def foo(a, b) do
       x = a + b
       y <- bar(a)
 
       x + y
     end
 
-    reather bar(a) do
+    @reather true
+    def bar(a) do
       -a
     end
 
-    reather baz(a), do: a + 1
+    @reather true
+    def baz(a), do: a + 1
   end
 
   test "Simple reather" do

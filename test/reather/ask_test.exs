@@ -5,13 +5,15 @@ defmodule ReatherTest.AskTest do
   defmodule Target do
     use Reather
 
-    reather foo() do
+    @reather true
+    def foo() do
       %{a: a} <- Reather.ask()
       %{b: b} <- Reather.ask()
       1 + a + b
     end
 
-    reather bar() do
+    @reather true
+    def bar() do
       x <- foo()
 
       x + 1

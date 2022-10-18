@@ -5,14 +5,16 @@ defmodule ReatherTest.ReatherpTest do
   defmodule Target do
     use Reather
 
-    reather foo(a, b) do
+    @reather true
+    def foo(a, b) do
       x = a + b
       y <- bar(a)
 
       x + y
     end
 
-    reatherp bar(a) do
+    @reather true
+    def bar(a) do
       -a
     end
   end

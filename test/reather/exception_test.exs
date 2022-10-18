@@ -13,13 +13,15 @@ defmodule ReatherTest.ExceptionTest do
       end
     end
 
-    reather foo() do
+    @reather true
+    def foo() do
       x <- case_exception()
 
       x
     end
 
-    reather bar() do
+    @reather true
+    def bar() do
       "test"
     else
       {:ok, ""} -> :empty
@@ -36,13 +38,15 @@ defmodule ReatherTest.ExceptionTest do
       end
     end
 
-    reather baz() do
+    @reather true
+    def baz() do
       x <- try_exception()
 
       x
     end
 
-    reather qux() do
+    @reather true
+    def qux() do
       "test"
     else
       {:ok, ""} -> :empty

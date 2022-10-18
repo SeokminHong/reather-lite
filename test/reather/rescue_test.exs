@@ -5,7 +5,8 @@ defmodule ReatherTest.RescueTest do
   defmodule Target do
     use Reather
 
-    reather div(a, b) do
+    @reather true
+    def div(a, b) do
       x <- div_inner(a, b)
 
       x

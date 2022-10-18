@@ -4,7 +4,8 @@ defmodule ReatherTest.EffectTest do
   import ExUnit.CaptureIO
 
   defmodule Target do
-    reather foo() do
+    @reather true
+    def foo() do
       x <- {:ok, 1}
       IO.puts(x)
 

@@ -6,7 +6,8 @@ defmodule ReatherTest.AfterTest do
   defmodule Target do
     use Reather
 
-    reather foo(a, b) do
+    @reather true
+    def foo(a, b) do
       x <- bar(a, b)
 
       x

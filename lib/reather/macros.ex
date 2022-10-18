@@ -2,20 +2,29 @@ defmodule Reather.Macros do
   @doc """
   Declare a reather.
   """
-  defmacro reather(head, body) do
+  defmacro def(head, body) do
     built_body = build_body(body)
 
     quote do
-      with {line, doc} when is_bitstring(doc) <- Module.get_attribute(__MODULE__, :doc) do
-        Module.put_attribute(
-          __MODULE__,
-          :doc,
-          Reather.Macros.decorate_doc({line, doc})
-        )
-      end
+      if Module.get_attribute(__MODULE__, :reather) do
+        with {line, doc} when is_bitstring(doc) <- Module.get_attribute(__MODULE__, :doc) do
+          Module.put_attribute(
+            __MODULE__,
+            :doc,
+            Reather.Macros.decorate_doc({line, doc})
+          )
+        end
 
-      def unquote(head) do
-        unquote(built_body)
+        Kernel.def unquote(head) do
+          unquote(built_body)
+        end
+
+        Module.delete_attribute(__MODULE__, :reather)
+      else
+        Kernel.def(
+          unquote(head),
+          unquote(body)
+        )
       end
     end
   end
@@ -67,12 +76,20 @@ defmodule Reather.Macros do
   @doc """
   Declare a private reather.
   """
-  defmacro reatherp(head, body) do
+  defmacro defp(head, body) do
     built_body = build_body(body)
 
     quote do
-      defp unquote(head) do
-        unquote(built_body)
+      if Module.has_attribute?(__MODULE__, :reather) do
+        Kernel.defp unquote(head) do
+          unquote(built_body)
+        end
+
+        Module.delete_attribute(__MODULE__, :reather)
+      else
+        Kernel.defp unquote(head) do
+          unquote(body)
+        end
       end
     end
   end

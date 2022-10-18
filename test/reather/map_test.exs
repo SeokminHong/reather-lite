@@ -5,14 +5,16 @@ defmodule ReatherTest.MapTest do
   defmodule Target do
     use Reather
 
-    reather foo() do
+    @reather true
+    def foo() do
       x <- {:ok, 1}
       y <- {:error, 1}
 
       x + y
     end
 
-    reather bar() do
+    @reather true
+    def bar() do
       x <- {:ok, 1}
       y <- {:ok, 2}
 

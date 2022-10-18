@@ -3,7 +3,8 @@ defmodule ReatherTest.TupleTest do
   use Reather
 
   defmodule Target do
-    reather foo() do
+    @reather true
+    def foo() do
       a <- {:ok, 1}
       {b, c} <- {:ok, 2, 3}
       d = nil
