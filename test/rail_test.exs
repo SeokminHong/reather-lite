@@ -4,23 +4,26 @@ defmodule RailTest do
 
   doctest Rail
 
-  defmodule Rail2 do
+  defmodule Calc do
     use Rail
 
-    rail foo(a, b) do
-      x = a + b
-      y <- negate(a)
-
-      x + y
+    rail div(num, denom) do
+      denom <- check_denom(denom)
+      num / denom
     end
 
-    rail negate(a) do
-      -a
+    rail check_denom(0) do
+      {:error, :div_by_zero}
+    end
+
+    rail check_denom(n) do
+      {:ok, n}
     end
   end
 
   test "rail/2" do
-    assert {:ok, 2} == Rail2.foo(1, 2)
+    assert {:ok, 5} == Calc.div(10, 2)
+    assert {:error, :div_by_zero} == Calc.div(10, 0)
   end
 
   test "rail/1" do
