@@ -17,29 +17,18 @@ defmodule RailTest do
     end
 
     rail check_denom(n) do
-      {:ok, n}
+      # same with {:ok, n}
+      n
     end
   end
 
   test "rail/2" do
-    assert {:ok, 5} == Calc.div(10, 2)
+    assert 5.0 == Calc.div(10, 2)
     assert {:error, :div_by_zero} == Calc.div(10, 0)
   end
 
-  test "rail/1" do
-    result =
-      rail do
-        x <- {:ok, 1}
-        y <- {:ok, 2}
-
-        x + y
-      end
-
-    assert {:ok, 3} == result
-  end
-
   defmodule Calc2 do
-    use Rail, override_def: true
+    use Rail
 
     def div(num, denom) do
       denom <- check_denom(denom)
@@ -51,12 +40,25 @@ defmodule RailTest do
     end
 
     def check_denom(n) do
-      {:ok, n}
+      # same with {:ok, n}
+      n
     end
   end
 
   test "def/2" do
-    assert {:ok, 5} == Calc2.div(10, 2)
+    assert 5.0 == Calc2.div(10, 2)
     assert {:error, :div_by_zero} == Calc2.div(10, 0)
+  end
+
+  test "rail/1" do
+    result =
+      rail do
+        x <- {:ok, 1}
+        y <- {:ok, 2}
+
+        x + y
+      end
+
+    assert 3 == result
   end
 end

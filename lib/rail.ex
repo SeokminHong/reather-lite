@@ -1,6 +1,6 @@
 defmodule Rail do
   defmacro __using__(opts) do
-    override_def = Keyword.get(opts, :override_def, false)
+    override_def = Keyword.get(opts, :override_def, true)
 
     common =
       quote do
@@ -76,7 +76,7 @@ defmodule Rail do
 
     wrapped_ret =
       quote do
-        unquote(List.first(ret)) |> Either.new()
+        unquote(List.first(ret))
       end
 
     body

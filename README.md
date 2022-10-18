@@ -27,198 +27,47 @@ end
 
 ### Basic usage
 
-`rail` macro defines a function returns `Rail`.
+`use Rail` introduces new syntax `left <- right`,
+which bind `value` to left when right is `{:ok, value}` or `value`
+or skips entire code block when right is `{:error, err}` or `:error`.
 
 ```elixir
 
 defmodule Target do
   use Rail
 
-  rail foo(a, b) do
-    a + b
+  def div(num, denom) do
+    denom <- check_denom(denom)
+    num / denom
+  end
+
+  def check_denom(0) do
+    {:error, :div_by_zero}
+  end
+
+  def check_denom(n) do
+    # same with {:ok, n}
+    n
   end
 end
 
-iex> Target.foo(1, 1)
-%Rail{...}
+iex> Calc.div(10, 2)
+5.0
+iex> Calc.div(10, 0)
+{:error, :div_by_zero}
 ```
 
-Since the `Rail` is lazily evaluated, it does nothing until call `Rail.run/2`.
+`rail/1` is available inside other code blocks.
 
 ```elixir
-iex> Target.foo(1, 1) |> Rail.run()
-{:ok, 2}
-```
 
-The result of `Rail` is always `{:ok, value}` or `{:error, error}`.
-
-In a `rail` block, the `ok` tuple will be automatically unwrapped by a `<-` operator.
-
-```elixir
-defmodule Target do
-  use Rail
-
-  rail foo() do
-    a <- {:ok, 1}         # a = 1
-    {b, c} <- {:ok, 2, 3} # b = 2, c = 3
-    d = nil
-    ^d <- :ok
-
-    a + b + c
-  end
-end
-
-iex> Target.foo() |> Rail.run()
-{:ok, 6}
-```
-
-Also, a `Rail` unwrap into a value with a `<-` operator.
-
-```elixir
-defmodule Target do
-  use Rail
-
-  rail foo(a, b) do
-    x <- bar(a) # The result of bar(a) is {:ok, a + 1} and x will be bound to a + 1.
-
-    x + b
-  end
-
-  rail bar(a), do: a + 1
-end
-
-iex> Target.foo(1, 1) |> Rail.run()
-{:ok, 3}
-```
-
-Because of the either monad, when the `<-` operator meets an error tuple,
-the rail will return it immediately.
-
-```elixir
-defmodule Target do
-  use Rail
-
-  rail foo() do
-    x <- {:ok, 1}
-    y <- {:error, "asdf", 1} # foo will return {:error, {"asdf", 1}}
-
-    x + y
-  end
-end
-
-iex> Target.foo() |> Rail.run()
-{:error, {"asdf", 1}}
-```
-
-### Inline `rail`
-
-`rail` also can be inlined.
-
-```elixir
-iex> r =
-...>   rail do
-...>     x <- {:ok, 1}
-...>     y <- {:ok, 2}
-...>
-...>     x + y
-...>   end
-%Rail{...}
-
-iex> r |> Rail.run()
-{:ok, 3}
-```
-
-### `else`, `rescue`, `catch`, `after`
-
-`rail` macro also accepts above clauses.
-
-```elixir
-defmodule Target do
-  use Rail
-
-  rail foo(a, b) do
-    x <- bar(a)
-    y <- baz(b)
-
-    x + y
-  else
-    {:error, _} -> {:ok, a + b}
-    ok -> ok
-  rescue
-    ArithmeticError -> {:error, :div_by_zero}
-  after
-    IO.puts("Target.foo/2")
-  end
-end
-```
-
-### `railp`
-
-If you want to define a private rail, use `railp` macro instead.
-
-```elixir
-defmodule Target do
-  use Rail
-
-  railp foo() do
-    1
-  end
-end
-```
-
-### `Rail.map`
-
-You can `map` a function to a `Rail`.
-The given function will be applied lazily when the result of
-the rail is an `ok` tuple.
-
-```elixir
-defmodule Target do
-  use Rail
-
-  rail foo() do
-    x <- {:ok, 1}
-
-    x
-  end
-
-  rail bar() do
-    x <- {:error, 1}
-
-    x
-  end
-end
-
-iex> Target.foo()
-...> |> Rail.map(fn x -> x + 1 end)
-...> |> Rail.run()
-{:ok, 2}
-
-iex> Target.bar()
-...> |> Rail.map(fn x -> x + 1 end)
-...> |> Rail.run()
-{:error, 1}
-```
-
-### `Rail.traverse`
-
-Transform a list of reathers to an rail of a list.
-
-This operation is lazy, so it's never computed until
-explicitly call `Rail.run/2`.
-
-```elixir
-iex> r = [{:ok, 1}, {:ok, 2}, {:ok, 3}]
-...>     |> Enum.map(&Rail.of/1) # Make reathers return each elements.
-...>     |> Rail.traverse()
-iex> Rail.run(r)
-{:ok, [1, 2, 3]}
-
-iex> r = [{:ok, 1}, {:error, "error"}, {:ok, 3}]
-...>     |> Enum.map(&Rail.of/1) # Make reathers return each elements.
-...>     |> Rail.traverse()
-iex> Rail.run(r)
-{:error, "error"}
+iex> rail do
+...    x <- {:ok, 1}
+...    y <- {:ok, 2}
+...
+...    x + y
+...  end
+3
 ```
 
 ### `Either.new`
