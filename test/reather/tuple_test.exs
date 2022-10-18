@@ -14,6 +14,6 @@ defmodule ReatherTest.TupleTest do
   end
 
   test "test tuple" do
-    assert {:ok, 6} == Target.foo() |> Reather.run()
+    assert {:ok, 6} == Target.foo()
   end
 end

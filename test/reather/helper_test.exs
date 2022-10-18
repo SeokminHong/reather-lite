@@ -21,20 +21,6 @@ defmodule ReatherTest.HelperTest do
   end
 
   test "Simple reather" do
-    assert {:ok, 2} == Target.foo(1, 2) |> Reather.run()
-  end
-
-  test "inline reather" do
-    r =
-      reather do
-        x <- Target.baz(1)
-        y <- Target.baz(1) |> Reather.inspect()
-
-        x + y
-      end
-
-    assert {{:ok, 4}, "{:ok, 2}\n"} ==
-             fn -> Reather.run(r) end
-             |> with_io()
+    assert {:ok, 2} == Target.foo(1, 2)
   end
 end

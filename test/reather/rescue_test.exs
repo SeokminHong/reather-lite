@@ -23,10 +23,10 @@ defmodule ReatherTest.RescueTest do
   end
 
   test "Simple reather" do
-    assert {:ok, 3} == Target.div(9, 3) |> Reather.run()
-    assert {:error, :div_by_zero} == Target.div(1, 0) |> Reather.run()
+    assert {:ok, 3} == Target.div(9, 3)
+    assert {:error, :div_by_zero} == Target.div(1, 0)
     # Unhandled exception
-    assert_raise FunctionClauseError, fn -> Target.div(:ok, :error) |> Reather.run() end
+    assert_raise FunctionClauseError, fn -> Target.div(:ok, :error) end
   end
 
   test "inline reather" do
@@ -40,8 +40,8 @@ defmodule ReatherTest.RescueTest do
       end
     end
 
-    assert {:ok, 3} == r.(9, 3) |> Reather.run()
+    assert {:ok, 3} == r.(9, 3)
 
-    assert {:error, :div_by_zero} == r.(1, 0) |> Reather.run()
+    assert {:error, :div_by_zero} == r.(1, 0)
   end
 end

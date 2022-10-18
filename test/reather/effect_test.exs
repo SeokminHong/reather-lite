@@ -14,7 +14,7 @@ defmodule ReatherTest.EffectTest do
 
   test "with side effect" do
     assert {{:ok, 2}, "1\n"} ==
-             fn -> Target.foo() |> Reather.run() end
+             fn -> Target.foo() end
              |> with_io()
   end
 end

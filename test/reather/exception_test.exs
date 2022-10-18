@@ -54,21 +54,21 @@ defmodule ReatherTest.ExceptionTest do
     assert_raise CaseClauseError,
                  "no case clause matching: \"test\"",
                  fn ->
-                   Target.foo() |> Reather.run()
+                   Target.foo()
                  end
 
     assert_raise Reather.ClauseError,
                  "no reather's else clause matching: {:ok, \"test\"}",
-                 fn -> Target.bar() |> Reather.run() end
+                 fn -> Target.bar() end
   end
 
   test "with try clause" do
     assert_raise TryClauseError,
                  "no try clause matching: \"test\"",
-                 fn -> Target.baz() |> Reather.run() end
+                 fn -> Target.baz() end
 
     assert_raise Reather.ClauseError,
                  "no reather's else clause matching: {:ok, \"test\"}",
-                 fn -> Target.qux() |> Reather.run() end
+                 fn -> Target.qux() end
   end
 end

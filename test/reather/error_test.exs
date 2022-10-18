@@ -14,6 +14,6 @@ defmodule ReatherTest.ErrorTest do
   end
 
   test "returns error" do
-    assert {:error, {"asdf", 1}} == Target.foo() |> Reather.run()
+    assert {:error, {"asdf", 1}} == Target.foo()
   end
 end

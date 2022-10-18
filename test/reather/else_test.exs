@@ -48,16 +48,16 @@ defmodule ReatherTest.ElseTest do
   end
 
   test "Simple reather" do
-    assert {:ok, 2} == Target.foo1(1, 2) |> Reather.run()
-    assert {:ok, 4} == Target.foo1(0, 2) |> Reather.run()
-    assert {:error, "same"} == Target.foo1(2, 2) |> Reather.run()
+    assert {:ok, 2} == Target.foo1(1, 2)
+    assert {:ok, 4} == Target.foo1(0, 2)
+    assert {:error, "same"} == Target.foo1(2, 2)
 
-    assert {:ok, 3} == Target.foo2(1, 2) |> Reather.run()
-    assert {:ok, 5} == Target.foo2(0, 2) |> Reather.run()
-    assert {:error, "same"} == Target.foo2(2, 2) |> Reather.run()
+    assert {:ok, 3} == Target.foo2(1, 2)
+    assert {:ok, 5} == Target.foo2(0, 2)
+    assert {:error, "same"} == Target.foo2(2, 2)
 
-    assert {:ok, 2} == Target.foo3(2, 2) |> Reather.run()
-    assert_raise Reather.ClauseError, fn -> Target.foo3(0, 2) |> Reather.run() end
+    assert {:ok, 2} == Target.foo3(2, 2)
+    assert_raise Reather.ClauseError, fn -> Target.foo3(0, 2) end
   end
 
   test "inline reather" do
@@ -73,8 +73,8 @@ defmodule ReatherTest.ElseTest do
       end
     end
 
-    assert {:ok, 2} == r.(1, 2) |> Reather.run()
-    assert {:ok, 4} == r.(0, 2) |> Reather.run()
-    assert {:error, "same"} == r.(2, 2) |> Reather.run()
+    assert {:ok, 2} == r.(1, 2)
+    assert {:ok, 4} == r.(0, 2)
+    assert {:error, "same"} == r.(2, 2)
   end
 end

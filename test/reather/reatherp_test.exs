@@ -18,14 +18,14 @@ defmodule ReatherTest.ReatherpTest do
   end
 
   test "with public foo" do
-    assert {:ok, 2} == Target.foo(1, 2) |> Reather.run()
+    assert {:ok, 2} == Target.foo(1, 2)
   end
 
   test "failed to call private bar" do
     assert_raise UndefinedFunctionError, fn ->
       Code.eval_quoted(
         quote do
-          alias!(Target).bar(1) |> Reather.run()
+          alias!(Target).bar(1)
         end
       )
     end

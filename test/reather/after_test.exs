@@ -28,12 +28,12 @@ defmodule ReatherTest.AfterTest do
 
   test "Simple reather" do
     assert {{:ok, 3}, "foo\n"} ==
-             fn -> Target.foo(1, 2) |> Reather.run() end
+             fn -> Target.foo(1, 2) end
              |> with_io()
 
     assert {{:ok, 4}, "foo\n"} ==
              fn ->
-               Target.foo(2, 2) |> Reather.run()
+               Target.foo(2, 2)
              end
              |> with_io()
   end
@@ -54,13 +54,13 @@ defmodule ReatherTest.AfterTest do
 
     assert {{:ok, 3}, "inline\n"} ==
              fn ->
-               r.(1, 2) |> Reather.run()
+               r.(1, 2)
              end
              |> with_io()
 
     assert {{:ok, 4}, "inline\n"} ==
              fn ->
-               r.(2, 2) |> Reather.run()
+               r.(2, 2)
              end
              |> with_io()
   end
