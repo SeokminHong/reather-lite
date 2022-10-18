@@ -10,26 +10,26 @@ defmodule ReatherTest.AfterTest do
 
       x
     else
-      {:error, "same"} -> {:ok, 2 * a}
+      {:error, :div_by_zero} -> {:ok, :nan}
       other -> other
     after
       send(self(), :after)
     end
 
     def bar(a, b) do
-      if a == b do
-        {:error, "same"}
+      if b == 0 do
+        {:error, :div_by_zero}
       else
-        a + b
+        a / b
       end
     end
   end
 
   test "Simple reather" do
-    assert {:ok, 3} == Target.foo(1, 2)
+    assert {:ok, 0.5} == Target.foo(1, 2)
     assert_receive :after
 
-    assert {:ok, 4} == Target.foo(2, 2)
+    assert {:ok, :nan} == Target.foo(1, 0)
     assert_receive :after
   end
 end
