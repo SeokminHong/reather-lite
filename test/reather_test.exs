@@ -1,7 +1,7 @@
 defmodule ReatherTest do
   use ExUnit.Case
-  use Reather
+  use Rail
 
-  doctest Reather
-  doctest Reather.Either
+  doctest Rail
+  doctest Rail.Either
 end

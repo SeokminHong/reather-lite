@@ -1,6 +1,6 @@
 defmodule ReatherTest.TupleTest do
   use ExUnit.Case
-  use Reather
+  use Rail
 
   defmodule Target do
     reather foo() do

@@ -1,5 +1,5 @@
-defmodule Reather.Macros do
-  alias Reather.Either
+defmodule Rail.Macros do
+  alias Rail.Either
 
   defmacro reather(head, body) do
     expanded_body = expand_body(body)

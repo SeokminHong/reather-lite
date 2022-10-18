@@ -1,9 +1,9 @@
 defmodule ReatherTest.RescueTest do
   use ExUnit.Case
-  use Reather
+  use Rail
 
   defmodule Target do
-    use Reather
+    use Rail
 
     reather div(a, b) do
       x <- div_inner(a, b)

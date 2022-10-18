@@ -1,4 +1,4 @@
-defmodule Reather.Either do
+defmodule Rail.Either do
   @type ok(t) :: {:ok, t}
   @type error(t) :: {:error, t}
   @type either(t) :: ok(t) | error(any)
@@ -210,7 +210,7 @@ defmodule Reather.Either do
   end
 
   @doc """
-  Create a new `Reather` from a reather and function.
+  Create a new `Rail` from a reather and function.
   The function will be called after the reather is run.
   """
   @spec chain(any, (any -> either(any))) :: either(any)

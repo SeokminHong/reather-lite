@@ -1,9 +1,9 @@
 defmodule ReatherTest.ErrorTest do
   use ExUnit.Case
-  use Reather
+  use Rail
 
   defmodule Target do
-    use Reather
+    use Rail
 
     reather foo() do
       x <- {:ok, 1}

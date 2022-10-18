@@ -1,7 +1,7 @@
 defmodule ReatherTest.TraversableTest do
   use ExUnit.Case
-  alias Reather
-  alias Reather.Either
+  alias Rail
+  alias Rail.Either
 
   test "either list" do
     assert {:ok, []} == [] |> Either.traverse()
