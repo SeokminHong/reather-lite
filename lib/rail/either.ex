@@ -236,4 +236,21 @@ defmodule Rail.Either do
   def chain(value, chain_fun) when is_function(chain_fun, 1) do
     value |> new() |> chain(chain_fun)
   end
+
+  @doc """
+  Alias to `chain/2`.
+
+  ## Examples
+
+      iex> 1 >>> fn v -> v + 10 end
+      11
+      iex> {:ok, 1} >>> fn v -> v + 10 end
+      11
+      iex> :error >>> fn v -> v + 10 end
+      {:error, nil}
+      iex> {:error, :noent} >>> fn v -> v + 10 end
+      {:error, :noent}
+
+  """
+  defdelegate value >>> chain_fun, to: __MODULE__, as: :chain
 end

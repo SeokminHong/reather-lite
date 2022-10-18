@@ -2,16 +2,22 @@ defmodule Rail do
   defmacro __using__(opts) do
     override_def = Keyword.get(opts, :override_def, false)
 
+    common =
+      quote do
+        import Rail.Either, only: [>>>: 2]
+        alias Rail.Either
+      end
+
     if override_def do
       quote do
         import Kernel, except: [def: 2, defp: 2]
         import Rail, only: [def: 2, defp: 2, rail: 1, rail: 2, railp: 2]
-        alias Rail.Either
+        unquote(common)
       end
     else
       quote do
         import Rail, only: [rail: 1, rail: 2, railp: 2]
-        alias Rail.Either
+        unquote(common)
       end
     end
   end
