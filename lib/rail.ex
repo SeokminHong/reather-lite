@@ -1,8 +1,18 @@
 defmodule Rail do
-  defmacro __using__([]) do
-    quote do
-      import Rail, only: [rail: 1, rail: 2, railp: 2]
-      alias Rail.Either
+  defmacro __using__(opts) do
+    override_def = Keyword.get(opts, :override_def, false)
+
+    if override_def do
+      quote do
+        import Kernel, except: [def: 2, defp: 2]
+        import Rail, only: [def: 2, defp: 2, rail: 1, rail: 2, railp: 2]
+        alias Rail.Either
+      end
+    else
+      quote do
+        import Rail, only: [rail: 1, rail: 2, railp: 2]
+        alias Rail.Either
+      end
     end
   end
 
@@ -16,11 +26,23 @@ defmodule Rail do
     end
   end
 
+  defmacro def(head, body) do
+    quote do
+      rail unquote(head), unquote(body)
+    end
+  end
+
   defmacro railp(head, body) do
     expanded_body = expand_body(body)
 
     quote do
       defp unquote(head), unquote(expanded_body)
+    end
+  end
+
+  defmacro defp(head, body) do
+    quote do
+      railp unquote(head), unquote(body)
     end
   end
 
