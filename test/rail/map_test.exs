@@ -1,4 +1,4 @@
-defmodule ReatherTest.MapTest do
+defmodule RailTest.MapTest do
   use ExUnit.Case
   use Rail
 

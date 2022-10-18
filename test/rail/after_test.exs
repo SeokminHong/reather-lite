@@ -1,4 +1,4 @@
-defmodule ReatherTest.AfterTest do
+defmodule RailTest.AfterTest do
   use ExUnit.Case
   use Rail
 

@@ -1,6 +1,9 @@
-defmodule ReatherTest.ReatherTest do
+defmodule RailTest do
   use ExUnit.Case
   use Rail
+
+  doctest Rail
+  doctest Rail.Either
 
   defmodule Target do
     use Rail

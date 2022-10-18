@@ -1,4 +1,4 @@
-defmodule ReatherTest.ErrorTest do
+defmodule RailTest.ErrorTest do
   use ExUnit.Case
   use Rail
 

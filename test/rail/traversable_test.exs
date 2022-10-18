@@ -1,4 +1,4 @@
-defmodule ReatherTest.TraversableTest do
+defmodule RailTest.TraversableTest do
   use ExUnit.Case
   alias Rail
   alias Rail.Either

@@ -1,4 +1,4 @@
-defmodule ReatherTest.RescueTest do
+defmodule RailTest.RescueTest do
   use ExUnit.Case
   use Rail
 
