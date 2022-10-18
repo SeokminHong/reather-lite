@@ -209,12 +209,8 @@ defmodule Rail.Either do
     end
   end
 
-  @moduledoc """
-  Chain function applications on contained data that may have some additional effect
-
-  As a diagram:
-
-      %Container<data> --- (data -> %Container<updated_data>) ---> %Container<updated_data>
+  @doc """
+  Apply a function to the either when it is `ok` compatible value.
 
   ## Examples
 

@@ -25,7 +25,8 @@ defmodule Rail do
   end
 
   defmacro rail([do: _] = body) do
-    expand_body(body)
+    [do: result] = expand_body(body)
+    result
   end
 
   # Private
