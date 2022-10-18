@@ -210,8 +210,8 @@ defmodule Rail.Either do
   end
 
   @doc """
-  Create a new `Rail` from a reather and function.
-  The function will be called after the reather is run.
+  Create a new `Rail` from a rail and function.
+  The function will be called after the rail is run.
   """
   @spec chain(any, (any -> either(any))) :: either(any)
   def chain(rhs, chain_fun) when is_function(chain_fun, 1) do

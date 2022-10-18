@@ -1,7 +1,7 @@
 defmodule Rail.Macros do
   alias Rail.Either
 
-  defmacro reather(head, body) do
+  defmacro rail(head, body) do
     expanded_body = expand_body(body)
 
     quote do
@@ -9,7 +9,7 @@ defmodule Rail.Macros do
     end
   end
 
-  defmacro reatherp(head, body) do
+  defmacro railp(head, body) do
     expanded_body = expand_body(body)
 
     quote do
@@ -17,7 +17,7 @@ defmodule Rail.Macros do
     end
   end
 
-  defmacro reather([do: _] = body) do
+  defmacro rail([do: _] = body) do
     expand_body(body)
   end
 

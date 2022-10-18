@@ -5,7 +5,7 @@ defmodule ReatherTest.AfterTest do
   defmodule Target do
     use Rail
 
-    reather foo(a, b) do
+    rail foo(a, b) do
       x <- bar(a, b)
 
       x
@@ -25,7 +25,7 @@ defmodule ReatherTest.AfterTest do
     end
   end
 
-  test "Simple reather" do
+  test "Simple rail" do
     assert {:ok, 0.5} == Target.foo(1, 2)
     assert_receive :after
 

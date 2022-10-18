@@ -7,9 +7,9 @@
 
 `Rail` is a shortcut of `Reader` + `Either` monads pattern.
 
-It makes you define and unwrap the `Rail` easiliy by using the `reather` macro.
+It makes you define and unwrap the `Rail` easiliy by using the `rail` macro.
 
-The original idea is from [jechol/reather](https://github.com/jechol/reather), and this is a
+The original idea is from [jechol/rail](https://github.com/jechol/rail), and this is a
 lite version without using [Witchcraft](https://witchcrafters.github.io/).
 
 ## Installation
@@ -26,13 +26,13 @@ end
 
 ### Basic usage
 
-`reather` macro defines a function returns `Rail`.
+`rail` macro defines a function returns `Rail`.
 
 ```elixir
 defmodule Target do
   use Rail
 
-  reather foo(a, b) do
+  rail foo(a, b) do
     a + b
   end
 end
@@ -50,13 +50,13 @@ iex> Target.foo(1, 1) |> Rail.run()
 
 The result of `Rail` is always `{:ok, value}` or `{:error, error}`.
 
-In a `reather` block, the `ok` tuple will be automatically unwrapped by a `<-` operator.
+In a `rail` block, the `ok` tuple will be automatically unwrapped by a `<-` operator.
 
 ```elixir
 defmodule Target do
   use Rail
 
-  reather foo() do
+  rail foo() do
     a <- {:ok, 1}         # a = 1
     {b, c} <- {:ok, 2, 3} # b = 2, c = 3
     d = nil
@@ -76,13 +76,13 @@ Also, a `Rail` unwrap into a value with a `<-` operator.
 defmodule Target do
   use Rail
 
-  reather foo(a, b) do
+  rail foo(a, b) do
     x <- bar(a) # The result of bar(a) is {:ok, a + 1} and x will be bound to a + 1.
 
     x + b
   end
 
-  reather bar(a), do: a + 1
+  rail bar(a), do: a + 1
 end
 
 iex> Target.foo(1, 1) |> Rail.run()
@@ -90,13 +90,13 @@ iex> Target.foo(1, 1) |> Rail.run()
 ```
 
 Because of the either monad, when the `<-` operator meets an error tuple,
-the reather will return it immediately.
+the rail will return it immediately.
 
 ```elixir
 defmodule Target do
   use Rail
 
-  reather foo() do
+  rail foo() do
     x <- {:ok, 1}
     y <- {:error, "asdf", 1} # foo will return {:error, {"asdf", 1}}
 
@@ -108,13 +108,13 @@ iex> Target.foo() |> Rail.run()
 {:error, {"asdf", 1}}
 ```
 
-### Inline `reather`
+### Inline `rail`
 
-`reather` also can be inlined.
+`rail` also can be inlined.
 
 ```elixir
 iex> r =
-...>   reather do
+...>   rail do
 ...>     x <- {:ok, 1}
 ...>     y <- {:ok, 2}
 ...>
@@ -128,13 +128,13 @@ iex> r |> Rail.run()
 
 ### `else`, `rescue`, `catch`, `after`
 
-`reather` macro also accepts above clauses.
+`rail` macro also accepts above clauses.
 
 ```elixir
 defmodule Target do
   use Rail
 
-  reather foo(a, b) do
+  rail foo(a, b) do
     x <- bar(a)
     y <- baz(b)
 
@@ -150,15 +150,15 @@ defmodule Target do
 end
 ```
 
-### `reatherp`
+### `railp`
 
-If you want to define a private reather, use `reatherp` macro instead.
+If you want to define a private rail, use `railp` macro instead.
 
 ```elixir
 defmodule Target do
   use Rail
 
-  reatherp foo() do
+  railp foo() do
     1
   end
 end
@@ -168,19 +168,19 @@ end
 
 You can `map` a function to a `Rail`.
 The given function will be applied lazily when the result of
-the reather is an `ok` tuple.
+the rail is an `ok` tuple.
 
 ```elixir
 defmodule Target do
   use Rail
 
-  reather foo() do
+  rail foo() do
     x <- {:ok, 1}
 
     x
   end
 
-  reather bar() do
+  rail bar() do
     x <- {:error, 1}
 
     x
@@ -200,7 +200,7 @@ iex> Target.bar()
 
 ### `Rail.traverse`
 
-Transform a list of reathers to an reather of a list.
+Transform a list of reathers to an rail of a list.
 
 This operation is lazy, so it's never computed until
 explicitly call `Rail.run/2`.

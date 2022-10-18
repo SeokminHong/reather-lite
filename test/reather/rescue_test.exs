@@ -5,7 +5,7 @@ defmodule ReatherTest.RescueTest do
   defmodule Target do
     use Rail
 
-    reather div(a, b) do
+    rail div(a, b) do
       x <- div_inner(a, b)
 
       x
@@ -22,7 +22,7 @@ defmodule ReatherTest.RescueTest do
     end
   end
 
-  test "Simple reather" do
+  test "Simple rail" do
     assert {:ok, 3} == Target.div(9, 3)
     assert {:error, :div_by_zero} == Target.div(1, 0)
     # Unhandled exception

@@ -5,14 +5,14 @@ defmodule ReatherTest.ReatherTest do
   defmodule Target do
     use Rail
 
-    reather foo(a, b) do
+    rail foo(a, b) do
       x = a + b
       y <- negate(a)
 
       x + y
     end
 
-    reather negate(a) do
+    rail negate(a) do
       -a
     end
   end

@@ -5,7 +5,7 @@ defmodule ReatherTest.ErrorTest do
   defmodule Target do
     use Rail
 
-    reather foo() do
+    rail foo() do
       x <- {:ok, 1}
       y <- {:error, "wrong", 1}
 
