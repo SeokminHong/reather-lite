@@ -3,7 +3,7 @@ defmodule Rail.MixProject do
 
   def project do
     [
-      app: :reather_lite,
+      app: :rail,
       description: "A lighter version of Rail; Combination of Reader and Either monads",
       docs: docs(),
       version: "0.2.7",
@@ -52,7 +52,7 @@ defmodule Rail.MixProject do
     [
       main: "readme",
       name: "rail",
-      canonical: "http://hexdocs.pm/reather_lite",
+      canonical: "http://hexdocs.pm/rail",
       source_url: "https://github.com/SeokminHong/rail",
       extras: [
         "README.md",

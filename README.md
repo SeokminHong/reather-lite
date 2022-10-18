@@ -1,8 +1,8 @@
-# ReatherLite
+# Rail
 
-[![test](https://github.com/SeokminHong/reather_lite/actions/workflows/test.yml/badge.svg)](https://github.com/SeokminHong/reather_lite/actions/workflows/test.yml)
+[![test](https://github.com/SeokminHong/rail/actions/workflows/test.yml/badge.svg)](https://github.com/SeokminHong/rail/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/SeokminHong/rail/badge.svg?branch=main)](https://coveralls.io/github/SeokminHong/rail?branch=main)
-[![Hex.pm](https://img.shields.io/hexpm/v/reather_lite)](https://hex.pm/packages/reather_lite)
+[![Hex.pm](https://img.shields.io/hexpm/v/rail)](https://hex.pm/packages/rail)
 [![GitHub](https://img.shields.io/github/license/SeokminHong/rail)](https://github.com/SeokminHong/rail/blob/main/LICENSE)
 
 `Rail` is a shortcut of `Reader` + `Either` monads pattern.
@@ -17,7 +17,7 @@ lite version without using [Witchcraft](https://witchcrafters.github.io/).
 ```elixir
 def deps do
   [
-    {:reather_lite, "~> 0.2.7"}
+    {:rail, "~> 1.0"}
   ]
 end
 ```
