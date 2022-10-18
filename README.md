@@ -1,16 +1,17 @@
 # Rail
 
-[![test](https://github.com/SeokminHong/rail/actions/workflows/test.yml/badge.svg)](https://github.com/SeokminHong/rail/actions/workflows/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/SeokminHong/rail/badge.svg?branch=main)](https://coveralls.io/github/SeokminHong/rail?branch=main)
+[![test](https://github.com/jechol/rail/actions/workflows/test.yml/badge.svg)](https://github.com/jechol/rail/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/jechol/rail/badge.svg?branch=main)](https://coveralls.io/github/jechol/rail?branch=main)
 [![Hex.pm](https://img.shields.io/hexpm/v/rail)](https://hex.pm/packages/rail)
-[![GitHub](https://img.shields.io/github/license/SeokminHong/rail)](https://github.com/SeokminHong/rail/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/github/license/jechol/rail)](https://github.com/jechol/rail/blob/main/LICENSE)
 
-`Rail` is a shortcut of `Reader` + `Either` monads pattern.
+`Rail` is a helper macros for "Railway oriented programming".
 
-It makes you define and unwrap the `Rail` easiliy by using the `rail` macro.
+It helps you handle error cases at almost no cost with `rail` macro.
 
-The original idea is from [jechol/rail](https://github.com/jechol/rail), and this is a
-lite version without using [Witchcraft](https://witchcrafters.github.io/).
+If you are not comfortable with "Railway oriented programming", see [Railway oriented programming](https://www.youtube.com/watch?v=fYo3LN9Vf_M)
+
+This library is mostly copied from [SeokminHong/reather-lite](https://github.com/SeokminHong/reather-lite) and removed reader monad related stuffs to lower learning curve.
 
 ## Installation
 
@@ -29,6 +30,7 @@ end
 `rail` macro defines a function returns `Rail`.
 
 ```elixir
+
 defmodule Target do
   use Rail
 
