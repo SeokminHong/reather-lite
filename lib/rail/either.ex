@@ -218,13 +218,13 @@ defmodule Rail.Either do
 
   ## Examples
 
-      iex> {:ok, 1} |> chain(fn v -> v + 10 end)
+      iex> {:ok, 1} |> Either.chain(fn v -> v + 10 end)
       {:ok, 11}
-      iex> 1 |> chain(fn v -> v + 10 end)
+      iex> 1 |> Either.chain(fn v -> v + 10 end)
       {:ok, 11}
-      iex> {:error, :noent} |> chain(fn v -> v + 10 end)
+      iex> {:error, :noent} |> Either.chain(fn v -> v + 10 end)
       {:error, :noent}
-      iex> :error |> chain(fn v -> v + 10 end)
+      iex> :error |> Either.chain(fn v -> v + 10 end)
       {:error, nil}
 
   """
