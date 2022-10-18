@@ -1,4 +1,4 @@
-defmodule ReatherTest.ReatherpTest do
+defmodule ReatherTest.ReatherTest do
   use ExUnit.Case
   use Reather
 
@@ -7,12 +7,12 @@ defmodule ReatherTest.ReatherpTest do
 
     reather foo(a, b) do
       x = a + b
-      y <- bar(a)
+      y <- negate(a)
 
       x + y
     end
 
-    reatherp bar(a) do
+    reather negate(a) do
       -a
     end
   end

@@ -7,13 +7,13 @@ defmodule ReatherTest.ErrorTest do
 
     reather foo() do
       x <- {:ok, 1}
-      y <- {:error, "asdf", 1}
+      y <- {:error, "wrong", 1}
 
       x + y
     end
   end
 
   test "returns error" do
-    assert {:error, {"asdf", 1}} == Target.foo()
+    assert {:error, {"wrong", 1}} == Target.foo()
   end
 end
