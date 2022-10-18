@@ -14,7 +14,7 @@ defmodule ReatherTest.ReatherpTest do
     end
 
     @reather true
-    def bar(a) do
+    defp bar(a) do
       -a
     end
   end
@@ -27,8 +27,9 @@ defmodule ReatherTest.ReatherpTest do
     assert_raise UndefinedFunctionError, fn ->
       Code.eval_quoted(
         quote do
-          alias!(Target).bar(1) |> Reather.run()
-        end
+          var!(target).bar(1) |> Reather.run()
+        end,
+        target: Target
       )
     end
   end
