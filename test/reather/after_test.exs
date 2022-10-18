@@ -32,25 +32,4 @@ defmodule ReatherTest.AfterTest do
     assert {:ok, 4} == Target.foo(2, 2)
     assert_receive :after
   end
-
-  test "inline reather" do
-    r = fn a, b ->
-      reather do
-        x <- Target.bar(a, b)
-
-        x
-      else
-        {:error, "same"} -> {:ok, 2 * a}
-        other -> other
-      after
-        send(self(), :after)
-      end
-    end
-
-    assert {:ok, 3} == r.(1, 2)
-    assert_receive :after
-
-    assert {:ok, 4} == r.(2, 2)
-    assert_receive :after
-  end
 end
