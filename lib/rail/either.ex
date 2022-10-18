@@ -234,7 +234,7 @@ defmodule Rail.Either do
     |> new()
     |> case do
       {:ok, value} ->
-        chain_fun.(value)
+        chain_fun.(value) |> new()
 
       {:error, _} = error ->
         error
