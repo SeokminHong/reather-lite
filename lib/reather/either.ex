@@ -208,4 +208,21 @@ defmodule Reather.Either do
       vs -> {:ok, Enum.reverse(vs)}
     end
   end
+
+  @doc """
+  Create a new `Reather` from a reather and function.
+  The function will be called after the reather is run.
+  """
+  @spec chain(any, (any -> either(any))) :: either(any)
+  def chain(rhs, chain_fun) when is_function(chain_fun, 1) do
+    rhs
+    |> new()
+    |> case do
+      {:ok, value} ->
+        chain_fun.(value)
+
+      {:error, _} = error ->
+        error
+    end
+  end
 end

@@ -1,23 +1,30 @@
 defmodule Reather.Macros do
+  alias Reather.Either
+
   @doc """
   Declare a reather.
   """
   defmacro reather(head, body) do
     built_body = build_body(body)
 
-    quote do
-      with {line, doc} when is_bitstring(doc) <- Module.get_attribute(__MODULE__, :doc) do
-        Module.put_attribute(
-          __MODULE__,
-          :doc,
-          Reather.Macros.decorate_doc({line, doc})
-        )
+    q =
+      quote do
+        with {line, doc} when is_bitstring(doc) <- Module.get_attribute(__MODULE__, :doc) do
+          Module.put_attribute(
+            __MODULE__,
+            :doc,
+            Reather.Macros.decorate_doc({line, doc})
+          )
+        end
+
+        def unquote(head) do
+          unquote(built_body)
+        end
       end
 
-      def unquote(head) do
-        unquote(built_body)
-      end
-    end
+    q |> Macro.to_string() |> IO.puts()
+
+    q
   end
 
   defmacro reather(body) do
@@ -26,41 +33,24 @@ defmodule Reather.Macros do
 
   defp build_body([{:do, do_block} | rest]) do
     built_do_block = build_do_block(do_block)
-    run_do_block = quote do: unquote(built_do_block) |> Reather.run(env)
 
     case rest do
       [] ->
         # no need to wrap
-        quote do
-          Reather.new(fn env -> unquote(run_do_block) end)
-        end
+        [do: built_do_block]
 
       [else: matches] ->
         # wrap with case
         quote do
-          Reather.new(fn env ->
-            try do
-              case unquote(run_do_block) do
-                unquote(matches)
-              end
-            rescue
-              e in CaseClauseError -> raise Reather.ClauseError, e.term
-            end
-          end)
+          case unquote(built_do_block) do
+            unquote(matches)
+          end
         end
 
       rest ->
         # Elixir function body is implicit try.
         # So we need to wrap the body with try to support do, else, rescue, catch and after.
-        quote do
-          Reather.new(fn env ->
-            try do
-              unquote({:try, [], [[do: run_do_block] ++ rest]})
-            rescue
-              e in TryClauseError -> raise Reather.ClauseError, e.term
-            end
-          end)
-        end
+        {:try, [], [[do: built_do_block] ++ rest]}
     end
   end
 
@@ -90,16 +80,14 @@ defmodule Reather.Macros do
 
     wrapped_ret =
       quote do
-        unquote(List.first(ret)) |> Reather.wrap()
+        unquote(List.first(ret)) |> Either.new()
       end
 
     body
     |> List.foldr(wrapped_ret, fn
       {:<-, _ctx, [lhs, rhs]}, acc ->
         quote do
-          unquote(rhs)
-          |> Reather.wrap()
-          |> Reather.chain(fn unquote(lhs) -> unquote(acc) end)
+          unquote(rhs) |> Either.chain(fn unquote(lhs) -> unquote(acc) end)
         end
 
       expr, acc ->
