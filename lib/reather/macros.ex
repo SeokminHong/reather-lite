@@ -1,6 +1,6 @@
 defmodule Reather.Macros do
   @doc """
-  Declare a reather.
+  If the function is marked with `@reather true`, it defines reather function instead.
   """
   defmacro def(head, body) do
     built_body = build_body(body)
@@ -29,6 +29,9 @@ defmodule Reather.Macros do
     end
   end
 
+  @doc """
+  Defines inline reather function.
+  """
   defmacro reather(body) do
     build_body(body)
   end

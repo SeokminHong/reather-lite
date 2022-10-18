@@ -7,7 +7,7 @@
 
 `Reather` is a shortcut of `Reader` + `Either` monads pattern.
 
-It makes you define and unwrap the `Reather` easiliy by using the `reather` macro.
+It makes you define and unwrap the `Reather` easiliy by using macros.
 
 The original idea is from [jechol/reather](https://github.com/jechol/reather), and this is a
 lite version without using [Witchcraft](https://witchcrafters.github.io/).
@@ -17,7 +17,7 @@ lite version without using [Witchcraft](https://witchcrafters.github.io/).
 ```elixir
 def deps do
   [
-    {:reather_lite, "~> 0.2.7"}
+    {:reather_lite, "~> 0.3.0"}
   ]
 end
 ```
@@ -26,13 +26,14 @@ end
 
 ### Basic usage
 
-`reather` macro defines a function returns `Reather`.
+`def` macro marked `@reather true` defines a function returns `Reather`.
 
 ```elixir
 defmodule Target do
   use Reather
 
-  reather foo(a, b) do
+  @reather true
+  def foo(a, b) do
     a + b
   end
 end
@@ -50,13 +51,14 @@ iex> Target.foo(1, 1) |> Reather.run()
 
 The result of `Reather` is always `{:ok, value}` or `{:error, error}`.
 
-In a `reather` block, the `ok` tuple will be automatically unwrapped by a `<-` operator.
+In a reather function, the `ok` tuple will be automatically unwrapped by a `<-` operator.
 
 ```elixir
 defmodule Target do
   use Reather
 
-  reather foo() do
+  @reather true
+  def foo() do
     a <- {:ok, 1}         # a = 1
     {b, c} <- {:ok, 2, 3} # b = 2, c = 3
     d = nil
@@ -76,13 +78,15 @@ Also, a `Reather` unwrap into a value with a `<-` operator.
 defmodule Target do
   use Reather
 
-  reather foo(a, b) do
+  @reather true
+  def foo(a, b) do
     x <- bar(a) # The result of bar(a) is {:ok, a + 1} and x will be bound to a + 1.
 
     x + b
   end
 
-  reather bar(a), do: a + 1
+  @reather true
+  def bar(a), do: a + 1
 end
 
 iex> Target.foo(1, 1) |> Reather.run()
@@ -96,7 +100,8 @@ the reather will return it immediately.
 defmodule Target do
   use Reather
 
-  reather foo() do
+  @reather true
+  def foo() do
     x <- {:ok, 1}
     y <- {:error, "asdf", 1} # foo will return {:error, {"asdf", 1}}
 
@@ -128,13 +133,14 @@ iex> r |> Reather.run()
 
 ### `else`, `rescue`, `catch`, `after`
 
-`reather` macro also accepts above clauses.
+The macros also accepts above clauses.
 
 ```elixir
 defmodule Target do
   use Reather
 
-  reather foo(a, b) do
+  @reather true
+  def foo(a, b) do
     x <- bar(a)
     y <- baz(b)
 
@@ -161,13 +167,15 @@ The providen environment can be accessed with `Reather.ask/0`.
 defmodule Target do
   use Reather
 
-  reather foo() do
+  @reather true
+  def foo() do
     %{a: a} <- Reather.ask()
     %{b: b} <- Reather.ask()
     1 + a + b
   end
 
-  reather bar() do
+  @reather true
+  def bar() do
     x <- foo()
 
     x + 1
@@ -182,15 +190,16 @@ iex> Target.bar() |> Reather.run(%{a: 10, b: 100})
 {:ok, 112}
 ```
 
-### `reatherp`
+### Private reather function
 
-If you want to define a private reather, use `reatherp` macro instead.
+If you want to define a private reather, use `defp` macro instead.
 
 ```elixir
 defmodule Target do
   use Reather
 
-  reatherp foo() do
+  @reather true
+  defp foo() do
     1
   end
 end
@@ -206,13 +215,15 @@ the reather is an `ok` tuple.
 defmodule Target do
   use Reather
 
-  reather foo() do
+  @reather true
+  def foo() do
     x <- {:ok, 1}
 
     x
   end
 
-  reather bar() do
+  @reather true
+  def bar() do
     x <- {:error, 1}
 
     x
