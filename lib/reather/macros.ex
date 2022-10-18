@@ -1,22 +1,19 @@
 defmodule Reather.Macros do
   alias Reather.Either
 
-  @doc """
-  Declare a reather.
-  """
   defmacro reather(head, body) do
     expanded_body = expand_body(body)
 
     quote do
-      with {line, doc} when is_bitstring(doc) <- Module.get_attribute(__MODULE__, :doc) do
-        Module.put_attribute(
-          __MODULE__,
-          :doc,
-          Reather.Macros.decorate_doc({line, doc})
-        )
-      end
-
       def unquote(head), unquote(expanded_body)
+    end
+  end
+
+  defmacro reatherp(head, body) do
+    expanded_body = expand_body(body)
+
+    quote do
+      defp unquote(head), unquote(expanded_body)
     end
   end
 
@@ -26,17 +23,6 @@ defmodule Reather.Macros do
 
   defp expand_body([{:do, do_block} | rest]) do
     [{:do, expand_do_block(do_block)} | rest]
-  end
-
-  @doc """
-  Declare a private reather.
-  """
-  defmacro reatherp(head, body) do
-    expanded_body = expand_body(body)
-
-    quote do
-      defp unquote(head), unquote(expanded_body)
-    end
   end
 
   defp expand_do_block({:__block__, _ctx, exprs}) do
@@ -68,9 +54,5 @@ defmodule Reather.Macros do
           unquote(acc)
         end
     end)
-  end
-
-  def decorate_doc({line, doc}) do
-    {line, "### (Reather)\n\n" <> doc}
   end
 end
