@@ -56,19 +56,11 @@ defmodule ReatherTest.ExceptionTest do
                  fn ->
                    Target.foo()
                  end
-
-    assert_raise Reather.ClauseError,
-                 "no reather's else clause matching: {:ok, \"test\"}",
-                 fn -> Target.bar() end
   end
 
   test "with try clause" do
     assert_raise TryClauseError,
                  "no try clause matching: \"test\"",
                  fn -> Target.baz() end
-
-    assert_raise Reather.ClauseError,
-                 "no reather's else clause matching: {:ok, \"test\"}",
-                 fn -> Target.qux() end
   end
 end

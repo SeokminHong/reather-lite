@@ -1,7 +1,6 @@
 defmodule ReatherTest.AfterTest do
   use ExUnit.Case
   use Reather
-  import ExUnit.CaptureIO
 
   defmodule Target do
     use Reather
@@ -14,7 +13,7 @@ defmodule ReatherTest.AfterTest do
       {:error, "same"} -> {:ok, 2 * a}
       other -> other
     after
-      IO.puts("foo")
+      send(self(), :after)
     end
 
     def bar(a, b) do
@@ -27,15 +26,11 @@ defmodule ReatherTest.AfterTest do
   end
 
   test "Simple reather" do
-    assert {{:ok, 3}, "foo\n"} ==
-             fn -> Target.foo(1, 2) end
-             |> with_io()
+    assert {:ok, 3} == Target.foo(1, 2)
+    assert_receive :after
 
-    assert {{:ok, 4}, "foo\n"} ==
-             fn ->
-               Target.foo(2, 2)
-             end
-             |> with_io()
+    assert {:ok, 4} == Target.foo(2, 2)
+    assert_receive :after
   end
 
   test "inline reather" do
@@ -48,20 +43,14 @@ defmodule ReatherTest.AfterTest do
         {:error, "same"} -> {:ok, 2 * a}
         other -> other
       after
-        IO.puts("inline")
+        send(self(), :after)
       end
     end
 
-    assert {{:ok, 3}, "inline\n"} ==
-             fn ->
-               r.(1, 2)
-             end
-             |> with_io()
+    assert {:ok, 3} == r.(1, 2)
+    assert_receive :after
 
-    assert {{:ok, 4}, "inline\n"} ==
-             fn ->
-               r.(2, 2)
-             end
-             |> with_io()
+    assert {:ok, 4} == r.(2, 2)
+    assert_receive :after
   end
 end

@@ -7,24 +7,19 @@ defmodule Reather.Macros do
   defmacro reather(head, body) do
     built_body = build_body(body)
 
-    q =
-      quote do
-        with {line, doc} when is_bitstring(doc) <- Module.get_attribute(__MODULE__, :doc) do
-          Module.put_attribute(
-            __MODULE__,
-            :doc,
-            Reather.Macros.decorate_doc({line, doc})
-          )
-        end
-
-        def unquote(head) do
-          unquote(built_body)
-        end
+    quote do
+      with {line, doc} when is_bitstring(doc) <- Module.get_attribute(__MODULE__, :doc) do
+        Module.put_attribute(
+          __MODULE__,
+          :doc,
+          Reather.Macros.decorate_doc({line, doc})
+        )
       end
 
-    q |> Macro.to_string() |> IO.puts()
-
-    q
+      def unquote(head) do
+        unquote(built_body)
+      end
+    end
   end
 
   defmacro reather(body) do
@@ -37,15 +32,7 @@ defmodule Reather.Macros do
     case rest do
       [] ->
         # no need to wrap
-        [do: built_do_block]
-
-      [else: matches] ->
-        # wrap with case
-        quote do
-          case unquote(built_do_block) do
-            unquote(matches)
-          end
-        end
+        built_do_block
 
       rest ->
         # Elixir function body is implicit try.

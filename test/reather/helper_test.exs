@@ -1,7 +1,6 @@
 defmodule ReatherTest.HelperTest do
   use ExUnit.Case
   use Reather
-  import ExUnit.CaptureIO
 
   defmodule Target do
     use Reather

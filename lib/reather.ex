@@ -4,8 +4,6 @@ defmodule Reather do
   @type reather :: %Reather{reather: fun()}
 
   require Reather.Macros
-  import Reather.Macros
-  alias Reather.Either
 
   @moduledoc """
   Reather is the combined form of Reader and Either monad.
