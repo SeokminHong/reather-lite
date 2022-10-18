@@ -209,9 +209,24 @@ defmodule Rail.Either do
     end
   end
 
-  @doc """
-  Create a new `Rail` from a rail and function.
-  The function will be called after the rail is run.
+  @moduledoc """
+  Chain function applications on contained data that may have some additional effect
+
+  As a diagram:
+
+      %Container<data> --- (data -> %Container<updated_data>) ---> %Container<updated_data>
+
+  ## Examples
+
+      iex> {:ok, 1} |> chain(fn v -> v + 10 end)
+      {:ok, 11}
+      iex> 1 |> chain(fn v -> v + 10 end)
+      {:ok, 11}
+      iex> {:error, :noent} |> chain(fn v -> v + 10 end)
+      {:error, :noent}
+      iex> :error |> chain(fn v -> v + 10 end)
+      {:error, nil}
+
   """
   @spec chain(any, (any -> either(any))) :: either(any)
   def chain(rhs, chain_fun) when is_function(chain_fun, 1) do

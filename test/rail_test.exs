@@ -3,9 +3,8 @@ defmodule RailTest do
   use Rail
 
   doctest Rail
-  doctest Rail.Either
 
-  defmodule Target do
+  defmodule Rail2 do
     use Rail
 
     rail foo(a, b) do
@@ -20,17 +19,19 @@ defmodule RailTest do
     end
   end
 
-  test "with public foo" do
-    assert {:ok, 2} == Target.foo(1, 2)
+  test "rail/2" do
+    assert {:ok, 2} == Rail2.foo(1, 2)
   end
 
-  test "failed to call private bar" do
-    assert_raise UndefinedFunctionError, fn ->
-      Code.eval_quoted(
-        quote do
-          alias!(Target).bar(1)
-        end
-      )
-    end
+  test "rail/1" do
+    result =
+      rail do
+        x <- {:ok, 1}
+        y <- {:ok, 2}
+
+        x + y
+      end
+
+    assert {:ok, 3} == result
   end
 end
