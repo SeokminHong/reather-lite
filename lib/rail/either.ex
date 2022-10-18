@@ -215,9 +215,9 @@ defmodule Rail.Either do
   ## Examples
 
       iex> 1 |> Either.chain(fn v -> v + 10 end)
-      {:ok, 11}
+      11
       iex> {:ok, 1} |> Either.chain(fn v -> v + 10 end)
-      {:ok, 11}
+      11
       iex> :error |> Either.chain(fn v -> v + 10 end)
       {:error, nil}
       iex> {:error, :noent} |> Either.chain(fn v -> v + 10 end)
@@ -225,15 +225,15 @@ defmodule Rail.Either do
 
   """
   @spec chain(any, (any -> either(any))) :: either(any)
-  def chain(rhs, chain_fun) when is_function(chain_fun, 1) do
-    rhs
-    |> new()
-    |> case do
-      {:ok, value} ->
-        chain_fun.(value) |> new()
+  def chain({:ok, value}, chain_fun) when is_function(chain_fun, 1) do
+    value |> chain_fun.()
+  end
 
-      {:error, _} = error ->
-        error
-    end
+  def chain({:error, _} = error, chain_fun) when is_function(chain_fun, 1) do
+    error
+  end
+
+  def chain(value, chain_fun) when is_function(chain_fun, 1) do
+    value |> new() |> chain(chain_fun)
   end
 end
